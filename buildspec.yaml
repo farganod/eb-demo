@@ -1,17 +1,25 @@
 version: 0.2
 
+env:
+  secrets-manager:
+    url: "$appname:url"
+    dbname: "$appname:dbname"
+    name: "$appname:username"
+    pass: "$appname:password"
+    port: "$appname:port"
+
+
 phases:
 
   install:
     commands:
-      - apt-get install python3.7 -y
-      - python3 --version
-      - pip install awsebcli --upgrade --user
-      - export PATH=~/.local/bin:$PATH
-      - echo $SHELL
-      - ls -a ~
-      - source ~/.bashrc
-      - eb --version
+      - cd /wordpress-beanstalk/.ebextensions
+      - 'echo "    RDS_HOSTNAME: $url" >> wordpress.config'
+      - 'echo "    RDS_DB_NAME: $dbname" >> wordpress.config'
+      - 'echo "    RDS_USERNAME: $name" >> wordpress.config'
+      - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
+      - 'echo "    RDS_PORT: $port" >> wordpress.config'
+      - cat wordpress.config
   # pre_build:
     # commands:
       # - terraform init
