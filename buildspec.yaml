@@ -27,4 +27,4 @@ phases:
       - ls
 artifacts:
   files:
-    - ./wordpress-beanstalk
+    - ./wordpress-beanstalk/*
