@@ -25,3 +25,4 @@ artifacts:
   files:
     - '**/*'
   base-directory: 'wordpress-beanstalk'
+  name: wordpress-beanstalk
