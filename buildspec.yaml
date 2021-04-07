@@ -4,7 +4,7 @@ phases:
 
   install:
     commands:
-      - apt-get install python37 -y
+      - apt-get install python3.7 -y
       - python3 --version
       - pip install awsebcli --upgrade --user
       - export PATH=~/.local/bin:$PATH
