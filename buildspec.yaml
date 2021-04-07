@@ -24,3 +24,6 @@ phases:
 artifacts:
   files:
     - ./wordpress-beanstalk/*
+    - ./wordpress-beanstalk/.ebextensions/**/*
+    - ./wordpress-beanstalk/wp-admin/**/*
+    - ./wordpress-beanstalk/wp-content/**/*
