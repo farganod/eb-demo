@@ -4,7 +4,7 @@ phases:
 
   install:
     commands:
-      - sudo yum install python37 -y
+      - yum install python37 -y
       - python3 --version
       - pip install awsebcli --upgrade --user
       - export PATH=~/.local/bin:$PATH
