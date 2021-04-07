@@ -11,30 +11,18 @@ env:
 
 phases:
 
-  install:
+  build:
     commands:
       - ls
-      - cd ./wordpress-beanstalk/.ebextensions
-      - 'echo "    RDS_HOSTNAME: $url" >> wordpress.config'
-      - 'echo "    RDS_DB_NAME: $dbname" >> wordpress.config'
-      - 'echo "    RDS_USERNAME: $name" >> wordpress.config'
-      - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
-      - 'echo "    RDS_PORT: $port" >> wordpress.config'
-      - cat wordpress.config
-      - cd ..
+      - cd ./wordpress-beanstalk
+      - aws elasticbeanstalk update-environment --environment-name my-env --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_HOSTNAME,Value=$url
+      - aws elasticbeanstalk update-environment --environment-name my-env --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_DB_NAME,Value=$dbname
+      - aws elasticbeanstalk update-environment --environment-name my-env --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_USERNAME,Value=$name
+      - aws elasticbeanstalk update-environment --environment-name my-env --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_PORT,Value=$port
+      - aws elasticbeanstalk update-environment --environment-name my-env --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_PASSWORD,Value=$pass
       - zip ../wordpress-beanstalk.zip -r * .[^.]*
+      - cd ..
       - ls
-  # pre_build:
-    # commands:
-      # - terraform init
-
-  # build:
-    # commands:
-      # - terraform destroy -var-file=demo.json -auto-approve
-
-  # post_build:
-   # commands:
-      # - echo terraform apply completed on `date`
 artifacts:
   files:
     - ./wordpress-beanstalk.zip
