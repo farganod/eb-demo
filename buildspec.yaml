@@ -23,7 +23,6 @@ phases:
       - cat wordpress.config
       - cd ../..
       - zip ../wordpress-beanstalk.zip -r * .[^.]*
-      - aws 
   # pre_build:
     # commands:
       # - terraform init
