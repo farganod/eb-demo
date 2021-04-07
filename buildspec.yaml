@@ -21,6 +21,9 @@ phases:
       - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
       - 'echo "    RDS_PORT: $port" >> wordpress.config'
       - cat wordpress.config
+      - cd ../..
+      - zip ../wordpress-beanstalk.zip -r * .[^.]*
+      - aws 
   # pre_build:
     # commands:
       # - terraform init
@@ -32,3 +35,6 @@ phases:
   # post_build:
    # commands:
       # - echo terraform apply completed on `date`
+artifacts:
+  files:
+    - wordpress-beanstalk.zip
