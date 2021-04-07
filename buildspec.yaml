@@ -15,11 +15,7 @@ phases:
     commands:
       - ls
       - cd ./wordpress-beanstalk
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_HOSTNAME,Value=$url
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_DB_NAME,Value=$dbname
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_USERNAME,Value=$name
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_PORT,Value=$port
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_PASSWORD,Value=$pass
+      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings [{Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_HOSTNAME,Value=$url},{Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_DB_NAME,Value=$dbname},{Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_USERNAME,Value=$name},{Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_PORT,Value=$port},{Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_PASSWORD,Value=$pass}]
       - zip ../wordpress-beanstalk.zip -r * .[^.]*
       - cd ..
       - ls
