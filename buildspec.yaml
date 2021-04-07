@@ -21,10 +21,6 @@ phases:
       - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
       - 'echo "    RDS_PORT: $port" >> wordpress.config'
       - cat wordpress.config
-      - cd ..
-      - zip ../wordpress-beanstalk.zip -r * .[^.]*
-      - cd ..
-      - ls
 artifacts:
   files:
     - ./wordpress-beanstalk/*
