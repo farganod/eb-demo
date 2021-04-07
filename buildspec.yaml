@@ -14,8 +14,14 @@ phases:
   build:
     commands:
       - ls
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings file://options.json
-      - cd ./wordpress-beanstalk
+      - cd ./wordpress-beanstalk/.ebextensions
+      - 'echo "    RDS_HOSTNAME: $url" >> wordpress.config'
+      - 'echo "    RDS_DB_NAME: $dbname" >> wordpress.config'
+      - 'echo "    RDS_USERNAME: $name" >> wordpress.config'
+      - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
+      - 'echo "    RDS_PORT: $port" >> wordpress.config'
+      - cat wordpress.config
+      - cd ..
       - zip ../wordpress-beanstalk.zip -r * .[^.]*
       - cd ..
       - ls
