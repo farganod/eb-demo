@@ -8,8 +8,7 @@ phases:
       - python3 --version
       - pip install awsebcli --upgrade --user
       - export PATH=~/.local/bin:$PATH
-      - ls -a ~
-      - source ~/.bashrc
+      - source ~/.profile
       - eb --version
   # pre_build:
     # commands:
