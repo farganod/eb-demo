@@ -69,7 +69,7 @@ Resources:
       OptionSettings:
       - Namespace: aws:autoscaling:asg
         OptionName: MinSize
-        Value: '2'
+        Value: '1'
       - Namespace: aws:autoscaling:asg
         OptionName: MaxSize
         Value: '6'
@@ -78,8 +78,8 @@ Resources:
         Value: LoadBalanced
       - Namespace: aws:autoscaling:launchconfiguration
         OptionName: IamInstanceProfile
-        Value: !Ref InstanceProfile        
-      SolutionStackName: 64bit Amazon Linux 2 v3.2.0 running PHP 8.0
+        Value: !Ref InstanceProfile
+      SolutionStackName: 64bit Amazon Linux 2 v3.2.0 running PHP 7.2
   Environment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
@@ -134,3 +134,55 @@ Resources:
           - { acct: !Ref AWS::AccountId }
 
 ############## CICD Stack #############################
+
+  Project:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Ref App
+      Description: A description about my project
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: no_artifacts
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:4.0
+        EnvironmentVariables:
+        - Name: appname
+          Type: PLAINTEXT
+          Value: !Ref App
+      Source:
+        Location: https://github.com/farganod/eb-demo
+        Type: GITHUB
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [codebuild.amazonaws.com]
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyName: CodeBuildAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - '*'
+                Effect: Allow
+                Resource: '*'
+  Secret:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      Name: !Ref App
+      Description: "This secret has a dynamically generated secret password."
+      SecretString: !Sub 
+        - '{"username":"${name}","password":"${pass}","url":"${url}","port":"${port}","dbname":"${dbname}"}'
+        - name: !Ref DBUsername
+          pass: !Ref DBPassword
+          url: !GetAtt DB.Endpoint.Address
+          port: !GetAtt DB.Endpoint.Port
+          dbname: !Ref DBName

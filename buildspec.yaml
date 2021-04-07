@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+
+  install:
+    commands:
+      - sudo yum install python37 -y
+      - python3 --version
+      - pip install awsebcli --upgrade --user
+      - export PATH=~/.local/bin:$PATH
+      - source ~/.bash_profile
+      - eb --version
+  pre_build:
+    commands:
+      - terraform init
+
+  build:
+    commands:
+      - terraform destroy -var-file=demo.json -auto-approve
+
+  post_build:
+    commands:
+      - echo terraform apply completed on `date`
