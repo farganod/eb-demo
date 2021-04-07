@@ -13,7 +13,8 @@ phases:
 
   install:
     commands:
-      - cd /wordpress-beanstalk/.ebextensions
+      - ls
+      - cd ./wordpress-beanstalk/.ebextensions
       - 'echo "    RDS_HOSTNAME: $url" >> wordpress.config'
       - 'echo "    RDS_DB_NAME: $dbname" >> wordpress.config'
       - 'echo "    RDS_USERNAME: $name" >> wordpress.config'
