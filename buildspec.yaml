@@ -9,6 +9,7 @@ phases:
       - pip install awsebcli --upgrade --user
       - export PATH=~/.local/bin:$PATH
       - echo $SHELL
+      - ls -a ~
       - source ~/.bashrc
       - eb --version
   # pre_build:
