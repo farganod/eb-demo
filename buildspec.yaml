@@ -23,8 +23,5 @@ phases:
       - cat wordpress.config
 artifacts:
   files:
-    - ./wordpress-beanstalk/**/*
-    - ./wordpress-beanstalk/.ebextensions/**/*
-    - ./wordpress-beanstalk/wp-admin/**/*
-    - ./wordpress-beanstalk/wp-content/**/*
-    - ./wordpress-beanstalk/wp-includes/**/*
+    - '**/*'
+  base-directory: 'wordpress-beanstalk'
