@@ -1,0 +1,32 @@
+[
+  {
+    "Namespace": "aws:elasticbeanstalk:application:environment",
+    "OptionName": "RDS_HOSTNAME",
+    "Value": "XXXX1"
+  },
+ {
+    "Namespace": "aws:elasticbeanstalk:application:environment",
+    "OptionName": "RDS_DB_NAME",
+    "Value": "XXXX2"
+  },
+  {
+    "Namespace": "aws:elasticbeanstalk:application:environment",
+    "OptionName": "RDS_USERNAME",
+    "Value": "XXXX3"
+  },
+  {
+    "Namespace": "aws:elasticbeanstalk:application:environment",
+    "OptionName": "RDS_PASSWORD",
+    "Value": "XXXX4"
+  },
+  {
+    "Namespace": "aws:elasticbeanstalk:application:environment",
+    "OptionName": "RDS_PORT",
+    "Value": "XXXX5"
+  },
+  {
+    "Namespace": "aws:autoscaling:launchconfiguration",
+    "OptionName": "SecurityGroups",
+    "Value": "default"
+  }
+]

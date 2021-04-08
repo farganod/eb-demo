@@ -20,22 +20,24 @@ phases:
     commands:
       - ls
       - cd ./wordpress-beanstalk/.ebextensions
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_HOSTNAME,Value=$url
-      - sleep 45
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_DB_NAME,Value=$dbname
-      - sleep 45
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_USERNAME,Value=$name
-      - sleep 45
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_PASSWORD,Value=$pass
-      - sleep 45
-      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RDS_PORT,Value=$port
-      - sleep 45
+      - sed "s/XXXX1/$url/g" settings.json.template > settings.json.template1
+      - sed "s/XXXX2/$dbname/g" settings.json.template1 > settings.json.template2
+      - sed "s/XXXX3/$name/g" settings.json.template2 > settings.json.template3
+      - sed "s/XXXX4/$pass/g" settings.json.template3 > settings.json.template4
+      - sed "s/XXXX5/$port/g" settings.json.template4 > settings.json
+      - aws elasticbeanstalk update-environment --environment-name $appname --option-settings file://settings.json
+      - rm settings.json.template
+      - rm settings.json.template1
+      - rm settings.json.template2
+      - rm settings.json.template3
+      - rm settings.json.template4
+      - rm settings.json
       # - 'echo "    RDS_HOSTNAME: $url" >> wordpress.config'
       # - 'echo "    RDS_DB_NAME: $dbname" >> wordpress.config'
       # - 'echo "    RDS_USERNAME: $name" >> wordpress.config'
       # - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
       # - 'echo "    RDS_PORT: $port" >> wordpress.config'
-      - cat wordpress.config
+      # - cat wordpress.config
       - sed "s/vpc-XXXXX/$vpcid/g" efs-create.config.template > efs-create.config.template1
       - sed "s/subnet-XXXXX1/$subnet1/g" efs-create.config.template1 > efs-create.config.template2
       - sed "s/subnet-XXXXX2/$subnet2/g" efs-create.config.template2 > efs-create.config.template3
