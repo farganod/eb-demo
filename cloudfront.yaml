@@ -1,0 +1,41 @@
+Parameters:
+  ALBId:
+    Description: 'Provide ALBID for Cloudfront Distro'
+    Type: String
+    MinLength: '1'
+    MaxLength: '128'
+  DNSName:
+    Description: url of ALB
+    Type: String
+    MinLength: '1'
+Resources:
+  CloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Comment: 'Cloudfront Distribution pointing ALB Origin'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - DELETE
+            - OPTIONS
+            - PATCH
+            - POST
+            - PUT
+          TargetOriginId: !Ref ALBId
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          ViewerProtocolPolicy: allow-all
+        Origins:
+          - DomainName: !Ref DNSName
+            Id: !Ref ALBId
+            CustomOriginConfig:
+              HTTPPort: '80'
+              HTTPSPort: '443'
+              OriginProtocolPolicy: match-viewer
+              OriginSSLProtocols:
+                - TLSv1
+                - TLSv1.1
+                - TLSv1.2
+                - SSLv3
+        Enabled: true

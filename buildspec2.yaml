@@ -1,0 +1,8 @@
+phases:
+  pre_build:
+    commands:
+      - elb=$(aws elasticbeanstalk describe-environment-resources --environment-name $appname | python -c "import sys, json; print(json.load(sys.stdin)['EnvironmentResources']['LoadBalancers'][0]['Name'])")
+      - dns=$(aws elb describe-load-balancers --load-balancer-names $elb | python -c "import sys, json; print(json.load(sys.stdin)['LoadBalancerDescriptions'][0]['DNSName'])")
+  build:
+    commands:
+      - aws cloudformation create-stack --stack-name '$appname-cloudfront' --template-body file://cloudfront.yaml --parameters ParameterKey=ALBId,ParameterValue=$elb ParameterKey=DNSName,ParameterValue=$dns

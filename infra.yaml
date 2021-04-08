@@ -154,6 +154,28 @@ Resources:
       Source:
         Location: https://github.com/farganod/eb-demo
         Type: GITHUB
+  Project2:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub
+        - ${name}-cloudfront
+        - { name: !Ref App} 
+      Description: A description about my project
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: no_artifacts
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:4.0
+        EnvironmentVariables:
+        - Name: appname
+          Type: PLAINTEXT
+          Value: !Ref App
+      Source:
+        Location: https://github.com/farganod/eb-demo
+        Type: GITHUB
+        BuildSpec: buildspec2.yaml
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
