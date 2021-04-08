@@ -15,11 +15,11 @@ phases:
     commands:
       - ls
       - cd ./wordpress-beanstalk/.ebextensions
-      - 'echo "    RDS_HOSTNAME: $url" >> wordpress.config'
-      - 'echo "    RDS_DB_NAME: $dbname" >> wordpress.config'
-      - 'echo "    RDS_USERNAME: $name" >> wordpress.config'
-      - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
-      - 'echo "    RDS_PORT: $port" >> wordpress.config'
+      - 'echo "    RDS_HOSTNAME: \'$url\'" >> wordpress.config'
+      - 'echo "    RDS_DB_NAME: \'$dbname'\" >> wordpress.config'
+      - 'echo "    RDS_USERNAME: \'$name\'" >> wordpress.config'
+      - 'echo "    RDS_PASSWORD: \'$pass\'" >> wordpress.config'
+      - 'echo "    RDS_PORT: '\$port\'" >> wordpress.config'
       - cat wordpress.config
 artifacts:
   files:
