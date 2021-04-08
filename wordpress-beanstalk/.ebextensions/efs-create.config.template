@@ -8,11 +8,11 @@
 option_settings:
   aws:elasticbeanstalk:customoption:
     EFSVolumeName: "EB-EFS-Volume"
-    VPCId: "vpc-4f73a732"
+    VPCId: "vpc-XXXXX"
 ## Subnet Options
-    SubnetA: "subnet-9d14dbac"
-    SubnetB: "subnet-21770a2f"
-    SubnetC: "subnet-3b43c51a"
+    SubnetA: "subnet-XXXXX1"
+    SubnetB: "subnet-XXXXX2"
+    SubnetC: "subnet-XXXXX3"
 
 Resources:
 ## Mount Target Resources

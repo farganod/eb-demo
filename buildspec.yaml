@@ -10,7 +10,12 @@ env:
 
 
 phases:
-
+  pre_build:
+    commands:
+      - vpcid=$(aws rds describe-db-instances --db-instance-identifier eb-demo123 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['VpcId'])")
+      - subnet1=$(aws rds describe-db-instances --db-instance-identifier eb-demo123 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][0]['SubnetIdentifier'])")
+      - subnet2=$(aws rds describe-db-instances --db-instance-identifier eb-demo123 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][1]['SubnetIdentifier'])")
+      - subnet3=$(aws rds describe-db-instances --db-instance-identifier eb-demo123 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][2]['SubnetIdentifier'])")
   build:
     commands:
       - ls
@@ -21,6 +26,11 @@ phases:
       - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
       - 'echo "    RDS_PORT: $port" >> wordpress.config'
       - cat wordpress.config
+      - sed "s/vpc-XXXXX/$vpcid/g" efs-create.config.template > efs-create.config.template1
+      - sed "s/subnet-XXXXX1/$subnet1/g" efs-create.config.template1 > efs-create.config.template2
+      - sed "s/subnet-XXXXX2/$subnet2/g" efs-create.config.template2 > efs-create.config.template3
+      - sed "s/subnet-XXXXX3/$subnet3/g" efs-create.config.template3 > efs-create.config
+      - cat efs-create.config
 artifacts:
   files:
     - '**/*'
