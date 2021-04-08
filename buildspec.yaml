@@ -47,6 +47,7 @@ phases:
       - rm efs-create.config.template1
       - rm efs-create.config.template2
       - rm efs-create.config.template3
+      - sleep 120
 artifacts:
   files:
     - '**/*'
