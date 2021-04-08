@@ -16,6 +16,9 @@ phases:
       - subnet1=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][0]['SubnetIdentifier'])")
       - subnet2=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][1]['SubnetIdentifier'])")
       - subnet3=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][2]['SubnetIdentifier'])")
+      - subnet4=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][3]['SubnetIdentifier'])")
+      - subnet5=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][4]['SubnetIdentifier'])")
+      - subnet6=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][5]['SubnetIdentifier'])")
   build:
     commands:
       - ls
@@ -52,12 +55,18 @@ phases:
       - sed "s/vpc-XXXXX/$vpcid/g" efs-create.config.template > efs-create.config.template1
       - sed "s/subnet-XXXXX1/$subnet1/g" efs-create.config.template1 > efs-create.config.template2
       - sed "s/subnet-XXXXX2/$subnet2/g" efs-create.config.template2 > efs-create.config.template3
-      - sed "s/subnet-XXXXX3/$subnet3/g" efs-create.config.template3 > efs-create.config
+      - sed "s/subnet-XXXXX3/$subnet3/g" efs-create.config.template3 > efs-create.config.template4
+      - sed "s/subnet-XXXXX4/$subnet4/g" efs-create.config.template4 > efs-create.config.template5
+      - sed "s/subnet-XXXXX5/$subnet5/g" efs-create.config.template5 > efs-create.config.template6
+      - sed "s/subnet-XXXXX6/$subnet6/g" efs-create.config.template6 > efs-create.config
       - cat efs-create.config
       - rm efs-create.config.template
       - rm efs-create.config.template1
       - rm efs-create.config.template2
       - rm efs-create.config.template3
+      - rm efs-create.config.template4
+      - rm efs-create.config.template5
+      - rm efs-create.config.template6
       - sleep 150
 artifacts:
   files:
