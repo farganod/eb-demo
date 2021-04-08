@@ -38,6 +38,7 @@ phases:
       # - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
       # - 'echo "    RDS_PORT: $port" >> wordpress.config'
       # - cat wordpress.config
+      - rm efs-create.config
       - sed "s/vpc-XXXXX/$vpcid/g" efs-create.config.template > efs-create.config.template1
       - sed "s/subnet-XXXXX1/$subnet1/g" efs-create.config.template1 > efs-create.config.template2
       - sed "s/subnet-XXXXX2/$subnet2/g" efs-create.config.template2 > efs-create.config.template3
