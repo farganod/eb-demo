@@ -19,7 +19,14 @@ phases:
   build:
     commands:
       - ls
-      - cd ./wordpress-beanstalk/.ebextensions
+      - curl https://wordpress.org/wordpress-4.9.5.tar.gz -o wordpress.tar.gz
+      - wget https://github.com/aws-samples/eb-php-wordpress/releases/download/v1.1/eb-php-wordpress-v1.zip
+      - tar -xvf wordpress.tar.gz
+      - mv wordpress wordpress-beanstalk
+      - cd wordpress-beanstalk
+      - unzip ../eb-php-wordpress-v1.zip
+      - cd ..
+      - mv efs-create.config.template ./wordpress-beanstalk/.ebextensions/efs-create.config.template
       - sed "s/XXXX1/$url/g" settings.json.template > settings.json.template1
       - sed "s/XXXX2/$dbname/g" settings.json.template1 > settings.json.template2
       - sed "s/XXXX3/$name/g" settings.json.template2 > settings.json.template3
@@ -32,13 +39,14 @@ phases:
       - rm settings.json.template3
       - rm settings.json.template4
       - rm settings.json
+      - cd ./wordpress-beanstalk/.ebextensions
+      - rm efs-create.config
       # - 'echo "    RDS_HOSTNAME: $url" >> wordpress.config'
       # - 'echo "    RDS_DB_NAME: $dbname" >> wordpress.config'
       # - 'echo "    RDS_USERNAME: $name" >> wordpress.config'
       # - 'echo "    RDS_PASSWORD: $pass" >> wordpress.config'
       # - 'echo "    RDS_PORT: $port" >> wordpress.config'
       # - cat wordpress.config
-      - rm efs-create.config
       - sed "s/vpc-XXXXX/$vpcid/g" efs-create.config.template > efs-create.config.template1
       - sed "s/subnet-XXXXX1/$subnet1/g" efs-create.config.template1 > efs-create.config.template2
       - sed "s/subnet-XXXXX2/$subnet2/g" efs-create.config.template2 > efs-create.config.template3
