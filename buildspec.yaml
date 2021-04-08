@@ -31,6 +31,10 @@ phases:
       - sed "s/subnet-XXXXX2/$subnet2/g" efs-create.config.template2 > efs-create.config.template3
       - sed "s/subnet-XXXXX3/$subnet3/g" efs-create.config.template3 > efs-create.config
       - cat efs-create.config
+      - rm efs-create.config.template
+      - rm efs-create.config.template1
+      - rm efs-create.config.template2
+      - rm efs-create.config.template3
 artifacts:
   files:
     - '**/*'
