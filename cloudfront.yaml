@@ -41,5 +41,5 @@ Resources:
         Enabled: true
 Outputs:
   CFID:
-    Description: Cloudformation ID
+    Description: Cloudfront ID
     Value: !Ref CloudFrontDistribution
