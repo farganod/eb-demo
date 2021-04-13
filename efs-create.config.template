@@ -13,9 +13,9 @@ option_settings:
     SubnetA: "subnet-XXXXX1"
     SubnetB: "subnet-XXXXX2"
     SubnetC: "subnet-XXXXX3"
-    SubnetD: "subnet-XXXXX4"
-    SubnetE: "subnet-XXXXX5"
-    SubnetF: "subnet-XXXXX6"
+##    SubnetD: "subnet-XXXXX4"
+##    SubnetE: "subnet-XXXXX5"
+##    SubnetF: "subnet-XXXXX6"
 
 Resources:
 ## Mount Target Resources
