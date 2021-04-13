@@ -12,13 +12,13 @@ env:
 phases:
   pre_build:
     commands:
-      - vpcid=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['VpcId'])")
-      - subnet1=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][0]['SubnetIdentifier'])")
-      - subnet2=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][1]['SubnetIdentifier'])")
-      - subnet3=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][2]['SubnetIdentifier'])")
-      - subnet4=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][3]['SubnetIdentifier'])")
-      - subnet5=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][4]['SubnetIdentifier'])")
-      - subnet6=$(aws rds describe-db-instances --db-instance-identifier $appname | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][5]['SubnetIdentifier'])")
+      - vpcid=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['VpcId'])")
+      - subnet1=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][0]['SubnetIdentifier'])")
+      - subnet2=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][1]['SubnetIdentifier'])")
+      - subnet3=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][2]['SubnetIdentifier'])")
+      #- subnet4=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][3]['SubnetIdentifier'])")
+      #- subnet5=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][4]['SubnetIdentifier'])")
+      #- subnet6=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][5]['SubnetIdentifier'])")
   build:
     commands:
       - ls
