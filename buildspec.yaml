@@ -31,8 +31,6 @@ phases:
       - cd ..
       - mv efs-create.config.template ./wordpress-beanstalk/.ebextensions/efs-create.config.template
       - rm ./wordpress-beanstalk/.ebextensions/dev.config
-      - rm ./wordpress-beanstalk/wp-content/themes/twentyseventeen/style.css
-      - mv style.css ./wordpress-beanstalk/wp-content/themes/twentyseventeen/style.css
       - mv dev.config ./wordpress-beanstalk/.ebextensions/dev.config
       - sed "s/XXXX1/$url/g" settings.json.template > settings.json.template1
       - sed "s/XXXX2/$dbname/g" settings.json.template1 > settings.json.template2
