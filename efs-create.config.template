@@ -43,30 +43,6 @@ Resources:
       - {Ref: MountTargetSecurityGroup}
       SubnetId:
         Fn::GetOptionSetting: {OptionName: SubnetC}
-  MountTargetD:
-    Type: AWS::EFS::MountTarget
-    Properties:
-      FileSystemId: {Ref: FileSystem}
-      SecurityGroups:
-      - {Ref: MountTargetSecurityGroup}
-      SubnetId:
-        Fn::GetOptionSetting: {OptionName: SubnetD}
-  MountTargetE:
-    Type: AWS::EFS::MountTarget
-    Properties:
-      FileSystemId: {Ref: FileSystem}
-      SecurityGroups:
-      - {Ref: MountTargetSecurityGroup}
-      SubnetId:
-        Fn::GetOptionSetting: {OptionName: SubnetE}
-  MountTargetF:
-    Type: AWS::EFS::MountTarget
-    Properties:
-      FileSystemId: {Ref: FileSystem}
-      SecurityGroups:
-      - {Ref: MountTargetSecurityGroup}
-      SubnetId:
-        Fn::GetOptionSetting: {OptionName: SubnetF}
 
 ##############################################
 #### Do not modify values below this line ####
