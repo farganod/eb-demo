@@ -117,21 +117,35 @@ Resources:
 
 ############## RDS Stack #############################
 
-  DB:
-    Type: 'AWS::RDS::DBInstance'
+  RDSCluster:
+    Type: 'AWS::RDS::DBCluster'
     Properties:
-      DBInstanceIdentifier: !Ref App
-      DBName: !Ref DBName
-      DBInstanceClass: !Ref DBInstanceClass
-      AllocatedStorage: !Ref DBAllocatedStorage
-      Engine: MySQL
-      EngineVersion: 8.0.16
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
-      MonitoringInterval: '60'
-      MonitoringRoleArn: !Sub
-          - arn:aws:iam::${acct}:role/rds-monitoring-role
-          - { acct: !Ref AWS::AccountId }
+      DBClusterIdentifier: !Sub
+          - ${name}-cluster
+          - { name: !Ref App}
+      Engine: aurora
+  RDSDBInstance1:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceIdentifier: !Sub
+          - ${name}-instance1
+          - { name: !Ref App}
+      Engine: aurora
+      DBClusterIdentifier: !Ref RDSCluster
+      PubliclyAccessible: 'false'
+      DBInstanceClass: db.r4.large
+  RDSDBInstance2:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceIdentifier: !Sub
+          - ${name}-instance2
+          - { name: !Ref App}
+      Engine: aurora
+      DBClusterIdentifier: !Ref RDSCluster
+      PubliclyAccessible: 'false'
+      DBInstanceClass: db.r4.large
 
 ############## CICD Stack #############################
 
@@ -205,6 +219,6 @@ Resources:
         - '{"username":"${name}","password":"${pass}","url":"${url}","port":"${port}","dbname":"${dbname}"}'
         - name: !Ref DBUsername
           pass: !Ref DBPassword
-          url: !GetAtt DB.Endpoint.Address
-          port: !GetAtt DB.Endpoint.Port
+          url: !GetAtt RDSCluster.Endpoint.Address
+          port: !GetAtt RDSCluster.Endpoint.Port
           dbname: !Ref DBName
