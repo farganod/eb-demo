@@ -8,5 +8,5 @@ phases:
   build:
     commands:
       - aws cloudformation create-stack --stack-name $appname-cloudfront --template-body file://cloudfront.yaml --parameters ParameterKey=ALBId,ParameterValue=$elb ParameterKey=DNSName,ParameterValue=$dns || aws cloudformation update-stack --stack-name $appname-cloudfront --template-body file://cloudfront.yaml --parameters ParameterKey=ALBId,ParameterValue=$elb ParameterKey=DNSName,ParameterValue=$dns; exit 0
-      - cfid=$(aws cloudformation describe-stacks --stack-name $appname-cloudfront | python -c "import sys, json; print(json.load(sys.stdin)['Stacks'][0]['Outputs'][0]['OutputValue'])"); exit 0
-      - aws cloudfront create-invalidation --distribution-id $cfid --paths "/*"; exit 0
+      - export CFID=aws cloudformation describe-stacks --stack-name $appname-cloudfront | python -c "import sys, json; print(json.load(sys.stdin)['Stacks'][0]['Outputs'][0]['OutputValue'])"; exit 0
+      - aws cloudfront create-invalidation --distribution-id $CFID --paths "/*"; exit 0
