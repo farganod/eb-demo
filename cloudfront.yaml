@@ -39,3 +39,7 @@ Resources:
                 - TLSv1.2
                 - SSLv3
         Enabled: true
+Outputs:
+  CFID:
+    Description: Cloudformation ID
+    Value: !Ref CloudFrontDistribution
