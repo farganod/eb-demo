@@ -123,6 +123,7 @@ Resources:
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       DBClusterIdentifier: !Ref App
+      DatabaseName: !Ref DBName
       Engine: aurora
   RDSDBInstance1:
     Type: 'AWS::RDS::DBInstance'
