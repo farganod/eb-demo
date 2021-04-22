@@ -313,6 +313,21 @@ Resources:
         - Namespace: aws:elasticbeanstalk:environment
           OptionName: LoadBalancerType
           Value: application
+        - Namespace: aws:autoscaling:asg
+          OptionName: Cooldown
+          Value: 30
+        - Namespace: aws:autoscaling:trigger
+          OptionName: LowerThreshold
+          Value: 10000
+        - Namespace: aws:autoscaling:trigger
+          OptionName: UpperThreshold
+          Value: 100000
+        - Namespace: aws:autoscaling:trigger
+          OptionName: Period
+          Value: 1
+        - Namespace: aws:autoscaling:trigger
+          OptionName: Statistic
+          Value: Maximum
         - Namespace: aws:ec2:vpc
           OptionName: VPCId
           Value: !Ref VPC
