@@ -328,6 +328,40 @@ Resources:
           - {sub1: !Ref PubSuba, sub2: !Ref PubSubb }
       VersionLabel:
         Ref: AppVersion
+  CloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Comment: 'Cloudfront Distribution pointing ALB Origin'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - DELETE
+            - OPTIONS
+            - PATCH
+            - POST
+            - PUT
+          TargetOriginId: !Sub
+            - 'arn:aws:elasticloadbalancing:${region}:${account}:loadbalancer/app/${name}'
+            - {region: !Ref "AWS::Region",account: !Ref "AWS::AccountId",name: !Select [0, !Split [".", !GetAtt Environment.EndpointURL]]}
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          ViewerProtocolPolicy: allow-all
+        Origins:
+          - DomainName: !GetAtt Environment.EndpointURL
+            Id: !Sub
+            - 'arn:aws:elasticloadbalancing:${region}:${account}:loadbalancer/app/${name}'
+            - {region: !Ref "AWS::Region",account: !Ref "AWS::AccountId",name: !Select [0, !Split [".", !GetAtt Environment.EndpointURL]]}
+            CustomOriginConfig:
+              HTTPPort: '80'
+              HTTPSPort: '443'
+              OriginProtocolPolicy: match-viewer
+              OriginSSLProtocols:
+                - TLSv1
+                - TLSv1.1
+                - TLSv1.2
+                - SSLv3
+        Enabled: true
   InstanceRole:
     Type: AWS::IAM::Role
     Properties: 
@@ -421,28 +455,6 @@ Resources:
       Source:
         Location: https://github.com/farganod/eb-demo
         Type: GITHUB
-  Project2:
-    Type: AWS::CodeBuild::Project
-    Properties:
-      Name: !Sub
-        - ${name}-cloudfront
-        - { name: !Ref App} 
-      Description: A description about my project
-      ServiceRole: !GetAtt CodeBuildRole.Arn
-      Artifacts:
-        Type: no_artifacts
-      Environment:
-        Type: LINUX_CONTAINER
-        ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:4.0
-        EnvironmentVariables:
-        - Name: appname
-          Type: PLAINTEXT
-          Value: !Ref App
-      Source:
-        Location: https://github.com/farganod/eb-demo
-        Type: GITHUB
-        BuildSpec: buildspec2.yaml
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
@@ -469,7 +481,7 @@ Resources:
       Name: !Ref App
       Description: "This secret has a dynamically generated secret password."
       SecretString: !Sub 
-        - '{"username":"${name}","password":"${pass}","url":"${url}","port":"${port}","dbname":"${dbname}","vpcid":"${vpcid}","prisuba":"${prisuba}","prisubb":"${prisubb}","rdssg":"${rdssg}"}'
+        - '{"username":"${name}","password":"${pass}","url":"${url}","port":"${port}","dbname":"${dbname}","vpcid":"${vpcid}","prisuba":"${prisuba}","prisubb":"${prisubb}","rdssg":"${rdssg}", "cfid":"${cfid}"}'
         - name: !Ref DBUsername
           pass: !Ref DBPassword
           url: !GetAtt RDSCluster.Endpoint.Address
@@ -479,3 +491,8 @@ Resources:
           prisuba: !Ref PriSuba
           prisubb: !Ref PriSubb
           rdssg: !Ref RDSSG
+          cfid: !Ref CloudFrontDistribution
+Outputs:
+  CFID:
+    Description: Cloudfront ID
+    Value: !Ref CloudFrontDistribution

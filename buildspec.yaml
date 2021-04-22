@@ -11,6 +11,7 @@ env:
     subnet1: "$appname:prisuba"
     subnet2: "$appname:prisubb"
     rdssg: "$appname:rdssg"
+    cfid: "$appname:cfid"
 
 
 phases:
@@ -70,6 +71,9 @@ phases:
       #- rm efs-create.config.template5
       #- rm efs-create.config.template6
       - sleep 150
+  post_build:
+    commands:
+      - aws cloudfront create-invalidation --distribution-id $cfid --paths "/*"
 artifacts:
   files:
     - '**/*'
