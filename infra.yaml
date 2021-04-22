@@ -469,7 +469,7 @@ Resources:
       Name: !Ref App
       Description: "This secret has a dynamically generated secret password."
       SecretString: !Sub 
-        - '{"username":"${name}","password":"${pass}","url":"${url}","port":"${port}","dbname":"${dbname}"}'
+        - '{"username":"${name}","password":"${pass}","url":"${url}","port":"${port}","dbname":"${dbname}","vpcid":"${vpcid}","prisuba":"${prisuba}","prisubb":"${prisubb}","rdssg":"${rdssg}"}'
         - name: !Ref DBUsername
           pass: !Ref DBPassword
           url: !GetAtt RDSCluster.Endpoint.Address
