@@ -27,6 +27,6 @@
   {
     "Namespace": "aws:autoscaling:launchconfiguration",
     "OptionName": "SecurityGroups",
-    "Value": "default"
+    "Value": "XXXX6"
   }
 ]

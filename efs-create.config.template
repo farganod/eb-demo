@@ -12,7 +12,7 @@ option_settings:
 ## Subnet Options
     SubnetA: "subnet-XXXXX1"
     SubnetB: "subnet-XXXXX2"
-    SubnetC: "subnet-XXXXX3"
+##    SubnetC: "subnet-XXXXX3"
 ##    SubnetD: "subnet-XXXXX4"
 ##    SubnetE: "subnet-XXXXX5"
 ##    SubnetF: "subnet-XXXXX6"
@@ -35,14 +35,6 @@ Resources:
       - {Ref: MountTargetSecurityGroup}
       SubnetId:
         Fn::GetOptionSetting: {OptionName: SubnetB}
-  MountTargetC:
-    Type: AWS::EFS::MountTarget
-    Properties:
-      FileSystemId: {Ref: FileSystem}
-      SecurityGroups:
-      - {Ref: MountTargetSecurityGroup}
-      SubnetId:
-        Fn::GetOptionSetting: {OptionName: SubnetC}
 
 ##############################################
 #### Do not modify values below this line ####

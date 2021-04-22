@@ -1,4 +1,11 @@
 Parameters:
+  ParentVPCStack:
+    Description: 'Provide Stack name of parent VPC stack'
+    Type: String
+    Default: eb-demo
+    MinLength: '1'
+    MaxLength: '128'
+    AllowedPattern: '^[a-zA-Z]+[0-9a-zA-Z\-]*$'
   App:
     Description: 'Provide Stack name of application'
     Type: String
@@ -43,8 +50,232 @@ Parameters:
     MaxLength: '41'
     AllowedPattern: '[a-zA-Z0-9]*'
     ConstraintDescription: must contain only alphanumeric characters.
-############## EB Stack #############################
+
 Resources:
+####################### Network Stack ###################################### 
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      InstanceTenancy: dedicated
+      Tags:
+      - Key: Name
+        Value: !Ref ParentVPCStack
+  
+  PubSuba:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-public-subnet-a
+          - { Name: !Ref ParentVPCStack }
+
+  PubSubb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-public-subnet-b
+          - { Name: !Ref ParentVPCStack }
+
+  PriSuba:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-private-subnet-a
+          - { Name: !Ref ParentVPCStack }
+
+  PriSubb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-private-subnet-b
+          - { Name: !Ref ParentVPCStack }
+  
+  IGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-igw
+          - { Name: !Ref ParentVPCStack }
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: VPC
+      InternetGatewayId:
+        Ref: IGW
+
+  NATa:
+   Type: AWS::EC2::NatGateway
+   Properties:
+      AllocationId:
+         Fn::GetAtt:
+         - EIPa
+         - AllocationId
+      SubnetId:
+         Ref: PubSuba
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-nat-a
+          - { Name: !Ref ParentVPCStack }
+  EIPa:
+    Type: AWS::EC2::EIP
+    Properties:
+        Domain: vpc
+
+  PriRoutea:
+    Type: AWS::EC2::Route
+    Properties:
+        RouteTableId:
+          Ref: PriaRouteTable
+        DestinationCidrBlock: 0.0.0.0/0
+        NatGatewayId:
+          Ref: NATa
+
+  NATb:
+   Type: AWS::EC2::NatGateway
+   Properties:
+      AllocationId:
+         Fn::GetAtt:
+         - EIPb
+         - AllocationId
+      SubnetId:
+         Ref: PubSuba
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-nat-b
+          - { Name: !Ref ParentVPCStack }
+  EIPb:
+    Type: AWS::EC2::EIP
+    Properties:
+        Domain: vpc
+
+  PriRouteb:
+    Type: AWS::EC2::Route
+    Properties:
+        RouteTableId:
+          Ref: PribRouteTable
+        DestinationCidrBlock: 0.0.0.0/0
+        NatGatewayId:
+          Ref: NATb
+
+  PriaRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-private-subnet-a-rt
+          - { Name: !Ref ParentVPCStack }
+
+  PribRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-private-subnet-b-rt
+          - { Name: !Ref ParentVPCStack }
+  
+  PubRoute:
+    Type: AWS::EC2::Route
+    Properties:
+        RouteTableId:
+          Ref: PubRouteTable
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId:
+          Ref: IGW
+
+  PubRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - ${Name}-public-rt
+          - { Name: !Ref ParentVPCStack }
+  
+  SubnetRouteTableAssociationpria:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: PriSuba
+      RouteTableId:
+        Ref: PriaRouteTable
+
+  SubnetRouteTableAssociationprib:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: PriSubb
+      RouteTableId:
+        Ref: PribRouteTable
+
+  SubnetRouteTableAssociationpuba:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: PubSuba
+      RouteTableId:
+        Ref: PubRouteTable
+
+  SubnetRouteTableAssociationpubb:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: PubSubb
+      RouteTableId:
+        Ref: PubRouteTable  
+
+############## EB Stack ############################# 
   Application:
     Type: AWS::ElasticBeanstalk::Application
     Properties:
@@ -60,26 +291,6 @@ Resources:
       SourceBundle:
         S3Bucket: !Sub "elasticbeanstalk-samples-${AWS::Region}"
         S3Key: php-newsample-app.zip
-  ConfigurationTemplate:
-    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
-    Properties:
-      ApplicationName:
-        Ref: Application
-      Description: AWS ElasticBeanstalk Sample Configuration Template
-      OptionSettings:
-      - Namespace: aws:autoscaling:asg
-        OptionName: MinSize
-        Value: '1'
-      - Namespace: aws:autoscaling:asg
-        OptionName: MaxSize
-        Value: '6'
-      - Namespace: aws:elasticbeanstalk:environment
-        OptionName: EnvironmentType
-        Value: LoadBalanced
-      - Namespace: aws:autoscaling:launchconfiguration
-        OptionName: IamInstanceProfile
-        Value: !Ref InstanceProfile
-      SolutionStackName: 64bit Amazon Linux 2 v3.2.0 running PHP 7.2
   Environment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
@@ -88,8 +299,33 @@ Resources:
       EnvironmentName: 
         Ref: App
       Description: AWS ElasticBeanstalk Sample Environment
-      TemplateName:
-        Ref: ConfigurationTemplate
+      SolutionStackName: 64bit Amazon Linux 2 v3.2.0 running PHP 7.2
+      OptionSettings:
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: IamInstanceProfile
+          Value: !Ref InstanceProfile
+        - Namespace: aws:ec2:instances
+          OptionName: InstanceTypes
+          Value: t3.small
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: LoadBalanced
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: LoadBalancerType
+          Value: application
+        - Namespace: aws:ec2:vpc
+          OptionName: VPCId
+          Value: !Ref VPC
+        - Namespace: aws:ec2:vpc
+          OptionName: Subnets
+          Value: !Sub
+          - "${sub1},${sub2}"
+          - {sub1: !Ref PriSuba, sub2: !Ref PriSubb }
+        - Namespace: aws:ec2:vpc
+          OptionName: ELBSubnets
+          Value: !Sub
+          - "${sub1},${sub2}"
+          - {sub1: !Ref PubSuba, sub2: !Ref PubSubb }
       VersionLabel:
         Ref: AppVersion
   InstanceRole:
@@ -116,15 +352,33 @@ Resources:
         - !Ref InstanceRole
 
 ############## RDS Stack #############################
-
+  DBSubnetGroup: 
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties: 
+      DBSubnetGroupDescription: Custom VPC Subnet Group
+      SubnetIds: 
+        - !Ref PriSuba
+        - !Ref PriSubb
+  RDSSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: String
+      GroupName: !Ref App
+      SecurityGroupIngress: 
+        - CidrIp: 10.0.0.0/16
+          IpProtocol: "-1"
+      VpcId: !Ref VPC
   RDSCluster:
     Type: 'AWS::RDS::DBCluster'
     Properties:
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       DBClusterIdentifier: !Ref App
+      DBSubnetGroupName: !Ref DBSubnetGroup
       DatabaseName: !Ref DBName
       Engine: aurora
+      VpcSecurityGroupIds: 
+        - !Ref RDSSG
   RDSDBInstance1:
     Type: 'AWS::RDS::DBInstance'
     Properties:
@@ -221,3 +475,7 @@ Resources:
           url: !GetAtt RDSCluster.Endpoint.Address
           port: !GetAtt RDSCluster.Endpoint.Port
           dbname: !Ref DBName
+          vpcid: !Ref VPC
+          prisuba: !Ref PriSuba
+          prisubb: !Ref PriSubb
+          rdssg: !Ref RDSSG

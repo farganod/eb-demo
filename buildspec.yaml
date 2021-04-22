@@ -7,15 +7,19 @@ env:
     name: "$appname:username"
     pass: "$appname:password"
     port: "$appname:port"
+    vpcid: "$appname:vpcid"
+    subnet1: "$appname:prisuba"
+    subnet2: "$appname:prisubb"
+    rdssg: "$appname:rdssg"
 
 
 phases:
-  pre_build:
-    commands:
-      - vpcid=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['VpcId'])")
-      - subnet1=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][0]['SubnetIdentifier'])")
-      - subnet2=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][1]['SubnetIdentifier'])")
-      - subnet3=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][2]['SubnetIdentifier'])")
+  # pre_build:
+    # commands:
+      #- vpcid=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['VpcId'])")
+      # - subnet1=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][0]['SubnetIdentifier'])")
+      # - subnet2=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][1]['SubnetIdentifier'])")
+      # - subnet3=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][2]['SubnetIdentifier'])")
       #- subnet4=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][3]['SubnetIdentifier'])")
       #- subnet5=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][4]['SubnetIdentifier'])")
       #- subnet6=$(aws rds describe-db-instances --db-instance-identifier $appname-instance1 | python -c "import sys, json; print(json.load(sys.stdin)['DBInstances'][0]['DBSubnetGroup']['Subnets'][5]['SubnetIdentifier'])")
@@ -38,20 +42,22 @@ phases:
       - sed "s/XXXX2/$dbname/g" settings.json.template1 > settings.json.template2
       - sed "s/XXXX3/$name/g" settings.json.template2 > settings.json.template3
       - sed "s/XXXX4/$pass/g" settings.json.template3 > settings.json.template4
-      - sed "s/XXXX5/$port/g" settings.json.template4 > settings.json
+      - sed "s/XXXX5/$port/g" settings.json.template4 > settings.json.template5
+      - sed "s/XXXX6/$rdssg/g" settings.json.template4 > settings.json
       - aws elasticbeanstalk update-environment --environment-name $appname --option-settings file://settings.json
       - rm settings.json.template
       - rm settings.json.template1
       - rm settings.json.template2
       - rm settings.json.template3
       - rm settings.json.template4
+      - rm settings.json.template5
       - rm settings.json
       - cd ./wordpress-beanstalk/.ebextensions
       - rm efs-create.config
       - sed "s/vpc-XXXXX/$vpcid/g" efs-create.config.template > efs-create.config.template1
       - sed "s/subnet-XXXXX1/$subnet1/g" efs-create.config.template1 > efs-create.config.template2
-      - sed "s/subnet-XXXXX2/$subnet2/g" efs-create.config.template2 > efs-create.config.template3
-      - sed "s/subnet-XXXXX3/$subnet3/g" efs-create.config.template3 > efs-create.config
+      - sed "s/subnet-XXXXX2/$subnet2/g" efs-create.config.template2 > efs-create.config
+      # - sed "s/subnet-XXXXX3/$subnet3/g" efs-create.config.template3 > efs-create.config
       #- sed "s/subnet-XXXXX4/$subnet4/g" efs-create.config.template4 > efs-create.config.template5
       #- sed "s/subnet-XXXXX5/$subnet5/g" efs-create.config.template5 > efs-create.config.template6
       #- sed "s/subnet-XXXXX6/$subnet6/g" efs-create.config.template6 > efs-create.config
@@ -59,7 +65,7 @@ phases:
       - rm efs-create.config.template
       - rm efs-create.config.template1
       - rm efs-create.config.template2
-      - rm efs-create.config.template3
+      # - rm efs-create.config.template3
       #- rm efs-create.config.template4
       #- rm efs-create.config.template5
       #- rm efs-create.config.template6

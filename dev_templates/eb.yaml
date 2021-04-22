@@ -1,0 +1,79 @@
+Parameters:
+  App:
+    Description: 'Provide Stack name of application'
+    Type: String
+    Default: eb-demo
+    MinLength: '1'
+    MaxLength: '128'
+    AllowedPattern: '^[a-zA-Z]+[0-9a-zA-Z\-]*$'
+Resources:
+  Application:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      ApplicationName: 
+        Ref: App
+      Description: AWS Elastic Beanstalk Wordpress
+  AppVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName:
+        Ref: Application
+      Description: AWS ElasticBeanstalk Sample Application Version
+      SourceBundle:
+        S3Bucket: !Sub "elasticbeanstalk-samples-${AWS::Region}"
+        S3Key: php-newsample-app.zip      
+  Environment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName:
+        Ref: Application
+      EnvironmentName: 
+        Ref: App
+      Description: AWS ElasticBeanstalk Wordpress
+      SolutionStackName: 64bit Amazon Linux 2 v3.2.0 running PHP 7.2
+      OptionSettings:
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: IamInstanceProfile
+          Value: !Ref InstanceProfile
+        - Namespace: aws:ec2:instances
+          OptionName: InstanceTypes
+          Value: t3.small
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: LoadBalanced
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: LoadBalancerType
+          Value: application
+        - Namespace: aws:ec2:vpc
+          OptionName: VPCId
+          Value: vpc-068ff190fc67ad6da
+        - Namespace: aws:ec2:vpc
+          OptionName: Subnets
+          Value: "subnet-0d20ce67f5b462971,subnet-0dd04151dea6908d0"
+        - Namespace: aws:ec2:vpc
+          OptionName: ELBSubnets
+          Value: "subnet-09196c5ddce577ddd,subnet-0ec6d695075133fe2"
+      VersionLabel:
+        Ref: AppVersion
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument:                   
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Description: Beanstalk EC2 role
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      Roles: 
+        - !Ref InstanceRole
