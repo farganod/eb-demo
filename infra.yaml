@@ -299,7 +299,7 @@ Resources:
       EnvironmentName: 
         Ref: App
       Description: AWS ElasticBeanstalk Sample Environment
-      SolutionStackName: 64bit Amazon Linux 2 v3.2.0 running PHP 7.2
+      SolutionStackName: 64bit Amazon Linux 2 v3.2.1 running PHP 7.2
       OptionSettings:
         - Namespace: aws:autoscaling:launchconfiguration
           OptionName: IamInstanceProfile
