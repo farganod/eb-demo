@@ -31,9 +31,11 @@ else
     </section>
 
     <section class="instructions">
-        <h2>Book a Trip</h2>
         <div>
             <img src="/images/trip.png" alt="trip" />
+        </div>
+        <div>
+            <img src="/images/reservation.png" alt="reservation" />
         </div>
     </section>
 
