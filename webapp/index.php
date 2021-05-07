@@ -41,7 +41,7 @@ else
         </div>
         <h3> Cancel Reservation </h3>
         <div>
-            <img src="/images/cancel.png" alt="cancel" />
+            <img src="/images/cancel.jpg" alt="cancel" />
         </div>
     </section>
 
