@@ -39,6 +39,10 @@ else
         <div>
             <img src="/images/reservation.png" alt="reservation" />
         </div>
+        <h3> Cancel Reservation </h3>
+        <div>
+            <img src="/images/cancel.png" alt="cancel" />
+        </div>
     </section>
 
     <!--[if lt IE 9]><script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
