@@ -26,26 +26,15 @@ else
         <h1>Travel with Octank</h1>
         <p>Get ready to set sail with the highest rated travel site availble on the internet </p>
         <div>
-            <img src="travel-world.jpg" alt="travel-world" />
+            <img src="/images/travel-world.jpg" alt="travel-world" />
         </div>
     </section>
 
     <section class="instructions">
-        <h2>What's Next?</h2>
-        <ul>
-            <li><a href="http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/">AWS Elastic Beanstalk overview</a></li>
-            <li><a href="http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_PHP_eb.html">Deploying AWS Elastic Beanstalk Applications in PHP Using Eb and Git</a></li>
-            <li><a href="http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_PHP.rds.html">Using Amazon RDS with PHP</a>
-            <li><a href="http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html">Customizing the Software on EC2 Instances</a></li>
-            <li><a href="http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/customize-containers-resources.html">Customizing Environment Resources</a></li>
-        </ul>
-
-        <h2>AWS SDK for PHP</h2>
-        <ul>
-            <li><a href="http://aws.amazon.com/sdkforphp">AWS SDK for PHP home</a></li>
-            <li><a href="http://aws.amazon.com/php">PHP developer center</a></li>
-            <li><a href="https://github.com/aws/aws-sdk-php">AWS SDK for PHP on GitHub</a></li>
-        </ul>
+        <h2>Book a Trip</h2>
+        <div>
+            <img src="/images/trip.png" alt="trip" />
+        </div>
     </section>
 
     <!--[if lt IE 9]><script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
