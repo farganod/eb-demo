@@ -44,7 +44,14 @@ else
             <img src="/images/cancel.jpg" alt="cancel" />
         </div>
     </section>
-
+    <?php
+     $dbhost = "eb-demo.cluster-cnh8fxw8a09f.us-east-1.rds.amazonaws.com";
+     $dbuser = "admin";
+     $dbpass = "This4now";
+     $db = "ebdb";
+     $conn = new mysqli_connect($dbhost, $dbuser, $dbpass,$db) or die("DB Connect failed");
+     mysqli_close($conn);
+    ?>
     <!--[if lt IE 9]><script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
 </body>
 </html>

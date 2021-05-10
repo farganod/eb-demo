@@ -290,7 +290,7 @@ Resources:
       Description: AWS ElasticBeanstalk Sample Application Version
       SourceBundle:
         S3Bucket: !Sub "elasticbeanstalk-samples-${AWS::Region}"
-        S3Key: php-newsample-app.zip
+        S3Key: nodejs-sample.zip
   Environment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:

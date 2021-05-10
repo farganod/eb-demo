@@ -17,10 +17,16 @@ env:
 phases:
  build:
     commands:
+      - sed "s/XXXX1/$url/g" settings.json.template > settings.config.template1
+      - sed "s/XXXX2/$port/g" settings.json.template1 > settings.config.template2
+      - sed "s/XXXX3/$name/g" settings.json.template2 > settings.config.template3
+      - sed "s/XXXX4/$pass/g" settings.json.template3 > settings.config.template4
+      - sed "s/XXXX5/$rdssg/g" settings.json.template4 > settings.config
+      - mv settings.config ./nodejs/.ebextensions/settings.config
       - echo compiling package
 
 artifacts:
   files:
     - '**/*'
-  base-directory: 'webapp'
+  base-directory: 'nodejs'
   name: webapp
