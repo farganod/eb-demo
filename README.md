@@ -1,6 +1,6 @@
 # Demo Elastic Beanstalk Stack Deployment
 
-This code supports a the deployment of Word Press on AWS Elastic Beanstalk as provided in this [tutorial](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/php-hawordpress-tutorial.html). Leveraging Cloudformation, CodeBuild, CodeDeploy, and CodePipeline this repo will standup an EB environment, update the application files including the `.ebextensions` files such that it's an idempotent deployment and will work in any account.
+Nodejs example of deploying Elastic Beanstalk connecting to an external RDS instance using Cloudformation to deploy the resources, Code Build and Code Pipeline to deploy the application to EB.
 
 The following resources are used to deploy this environment:
 
