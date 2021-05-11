@@ -394,17 +394,6 @@ Resources:
         - CidrIp: 10.0.0.0/16
           IpProtocol: "-1"
       VpcId: !Ref VPC
-  # RDSCluster:
-  #  Type: 'AWS::RDS::DBCluster'
-  #  Properties:
-  #    MasterUsername: !Ref DBUsername
-  #    MasterUserPassword: !Ref DBPassword
-  #    DBClusterIdentifier: !Ref App
-  #   DBSubnetGroupName: !Ref DBSubnetGroup
-  #    DatabaseName: !Ref DBName
-  #    Engine: aurora
-  #    VpcSecurityGroupIds: 
-  #      - !Ref RDSSG
   RDSDBInstance:
     Type: 'AWS::RDS::DBInstance'
     Properties:
@@ -412,7 +401,8 @@ Resources:
           - ${name}-instance
           - { name: !Ref App}
       Engine: sqlserver-se
-      AllocatedStorage: 50
+      AllocatedStorage: !Ref DBAllocatedStorage
+      MultiAZ: 'true'
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       DBSubnetGroupName: !Ref DBSubnetGroup
@@ -421,16 +411,6 @@ Resources:
         - !Ref RDSSG
       PubliclyAccessible: 'false'
       DBInstanceClass: db.m5.large
-  # RDSDBInstance2:
-  #  Type: 'AWS::RDS::DBInstance'
-  #  Properties:
-  #    DBInstanceIdentifier: !Sub
-  #        - ${name}-instance2
-  #        - { name: !Ref App}
-  #    Engine: aurora
-  #    DBClusterIdentifier: !Ref RDSCluster
-  #    PubliclyAccessible: 'false'
-  #    DBInstanceClass: db.r4.large
 
 ############## CICD Stack #############################
 
