@@ -2,7 +2,7 @@ option_settings:
     aws:elasticbeanstalk:application:environment:
       host_name: "XXXX1"
       user_name: "XXXX3"
-      password:"XXXX4"
+      password: "XXXX4"
       dbname: "XXXX2"
     aws:autoscaling:launchconfiguration:
       SecurityGroups: "XXXX5"
