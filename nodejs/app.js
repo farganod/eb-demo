@@ -11,6 +11,7 @@ const port = process.env.PORT || 3000,
   html_connected = fs.readFileSync("index_connected.html");
 
 const try_connect_sql = async (host, user, pass, db) => {
+  /*
   try {
     console.log("trying to connect to server", host);
     const connection = await mysql.createConnection({
@@ -26,6 +27,22 @@ const try_connect_sql = async (host, user, pass, db) => {
     console.log(err);
     return false;
   }
+  */
+  
+  let connection = mysql.createConnection({
+    host     : host,
+    user     : user,
+    password : pass,
+    database : db
+  });
+  connection.connect(function(err) {
+    if (err) {
+      return console.error('error: ' + err.message);
+    }
+  
+    console.log('Connected to the MySQL server.');
+  });
+  connection.close();
 };
 
 var server = http.createServer(async (req, res) => {
