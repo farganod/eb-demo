@@ -14,14 +14,15 @@ const try_connect_sql = async (host, user, pass, db) => {
   const con = mysql.createConnection({
       host: host,
       user: user,
-      password: pass
+      password: pass,
+      database: db
   });
   
   con.connect(function(err) {
       if (err) return false;
       console.log("Connected!");
       con.end();
-      return true
+      return true;
   });
 };
 
