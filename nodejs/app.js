@@ -16,19 +16,16 @@ const try_connect_sql = async (hostname, username, pass) => {
     user     : username,
     password : pass
   });
-  
-  connection.connect(function(err) {
-    if (err) {
-      console.error('error connecting: ' + err.stack);
-      return false;
-    }
-  
+  try {
+    connection.connect();
     console.log('connected as id ' + connection.threadId);
-  });
+    connection.end();
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 
-  connection.end();
-
-  return true;
 };
 
 var server = http.createServer(async (req, res) => {
