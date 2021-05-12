@@ -4,7 +4,7 @@
 // app.use(express.static(publicDir)); 
 
 const port = process.env.PORT || 3000,
-  //mysql = require("mysql"),
+  mysql = require("mysql"),
   http = require("http"),
   fs = require("fs"),
   //html_disconnected = fs.readFileSync("index_disconnected.html"),
