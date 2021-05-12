@@ -10,11 +10,12 @@ const port = process.env.PORT || 3000,
   html_disconnected = fs.readFileSync("index_disconnected.html"),
   html_connected = fs.readFileSync("index_connected.html");
 
-const try_connect_sql = async (hostname, username, pass) => {
+const try_connect_sql = async (hostname, username, pass, db) => {
   var connection = mysql.createConnection({
     host     : hostname,
     user     : username,
-    password : pass
+    password : pass,
+    database: db
   });
   try {
     connection.connect();
@@ -31,7 +32,7 @@ const try_connect_sql = async (hostname, username, pass) => {
 var server = http.createServer(async (req, res) => {
   if (req.method === "GET") {
     res.writeHead(200, "OK", { "Content-Type": "text/html" });
-    const result = await try_connect_sql(process.env.host_name,process.env.user_name,process.env.password);
+    const result = await try_connect_sql(process.env.host_name,process.env.user_name,process.env.password,process.env.dbname);
     res.write(result ? html_connected : html_disconnected);
   } else {
     res.writeHead(405, "Method Not Allowed", { "Content-Type": "text/plain" });
