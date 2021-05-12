@@ -1,5 +1,8 @@
 option_settings:
     aws:elasticbeanstalk:application:environment:
-      CONNECTION_STRING: "Server=XXXX1,XXXX2;uid=XXXX3;pwd=XXXX4"
+      host_name: "XXXX1"
+      user_name: "XXXX3"
+      password:"XXXX4"
+      dbname: "XXXX2"
     aws:autoscaling:launchconfiguration:
       SecurityGroups: "XXXX5"

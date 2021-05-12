@@ -3,6 +3,7 @@ version: 0.2
 env:
   secrets-manager:
     url: "$appname:url"
+    dbname: "$appname:dbname"
     name: "$appname:username"
     pass: "$appname:password"
     port: "$appname:port"
@@ -17,7 +18,7 @@ phases:
  build:
     commands:
       - sed "s/XXXX1/$url/g" settings.config.template > settings.config.template1
-      - sed "s/XXXX2/$port/g" settings.config.template1 > settings.config.template2
+      - sed "s/XXXX2/$dbname/g" settings.config.template1 > settings.config.template2
       - sed "s/XXXX3/$name/g" settings.config.template2 > settings.config.template3
       - sed "s/XXXX4/$pass/g" settings.config.template3 > settings.config.template4
       - sed "s/XXXX5/$rdssg/g" settings.config.template4 > settings.config
