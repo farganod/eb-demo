@@ -21,8 +21,8 @@ phases:
       - sed "s/XXXX2/$port/g" settings.config.template1 > settings.config.template2
       - sed "s/XXXX3/$name/g" settings.config.template2 > settings.config.template3
       - sed "s/XXXX4/$pass/g" settings.config.template3 > settings.config.template4
-      - sed "s/XXXX4/$dbname/g" settings.config.template4 > settings.config.template5
-      - sed "s/XXXX5/$rdssg/g" settings.config.template5 > settings.config
+      - sed "s/XXXX5/$dbname/g" settings.config.template4 > settings.config.template5
+      - sed "s/XXXX6/$rdssg/g" settings.config.template5 > settings.config
       - mv settings.config ./nodejs/.ebextensions/settings.config
       - echo compiling package
 

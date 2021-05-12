@@ -6,4 +6,4 @@ option_settings:
       password: "XXXX4"
       dbname: "XXXX5"
     aws:autoscaling:launchconfiguration:
-      SecurityGroups: "XXXX5"
+      SecurityGroups: "XXXX6"
