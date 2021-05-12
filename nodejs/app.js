@@ -23,7 +23,7 @@ const try_connect_sql = async (host, user, pass, db) => {
       con.end();
   });
 };
-*/
+
 var server = http.createServer(async (req, res) => {
   if (req.method === "GET") {
     res.writeHead(200, "OK", { "Content-Type": "text/html" });
