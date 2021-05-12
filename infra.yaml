@@ -13,6 +13,14 @@ Parameters:
     MinLength: '1'
     MaxLength: '128'
     AllowedPattern: '^[a-zA-Z]+[0-9a-zA-Z\-]*$'
+  DBName:
+    Default: ebdb
+    Description: My database
+    Type: String
+    MinLength: '1'
+    MaxLength: '64'
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters.
   DBInstanceClass:
     Default: db.m5.large
     Description: DB instance class
@@ -394,23 +402,37 @@ Resources:
         - CidrIp: 10.0.0.0/16
           IpProtocol: "-1"
       VpcId: !Ref VPC
-  RDSDBInstance:
+  RDSCluster:
+    Type: 'AWS::RDS::DBCluster'
+    Properties:
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      DBClusterIdentifier: !Ref App
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      DatabaseName: !Ref DBName
+      Engine: aurora
+      VpcSecurityGroupIds: 
+        - !Ref RDSSG
+  RDSDBInstance1:
     Type: 'AWS::RDS::DBInstance'
     Properties:
       DBInstanceIdentifier: !Sub
-          - ${name}-instance
+          - ${name}-instance1
           - { name: !Ref App}
-      Engine: sqlserver-se
-      AllocatedStorage: !Ref DBAllocatedStorage
-      MultiAZ: 'true'
-      MasterUsername: !Ref DBUsername
-      MasterUserPassword: !Ref DBPassword
-      DBSubnetGroupName: !Ref DBSubnetGroup
-      LicenseModel: license-included
-      VPCSecurityGroups:
-        - !Ref RDSSG
+      Engine: aurora
+      DBClusterIdentifier: !Ref RDSCluster
       PubliclyAccessible: 'false'
-      DBInstanceClass: db.m5.large
+      DBInstanceClass: db.r4.large
+  RDSDBInstance2:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceIdentifier: !Sub
+          - ${name}-instance2
+          - { name: !Ref App}
+      Engine: aurora
+      DBClusterIdentifier: !Ref RDSCluster
+      PubliclyAccessible: 'false'
+      DBInstanceClass: db.r4.large
 
 ############## CICD Stack #############################
 
@@ -459,11 +481,12 @@ Resources:
       Name: !Ref App
       Description: "This secret has a dynamically generated secret password."
       SecretString: !Sub 
-        - '{"username":"${name}","password":"${pass}","url":"${url}","port":"${port}","vpcid":"${vpcid}","prisuba":"${prisuba}","prisubb":"${prisubb}","rdssg":"${rdssg}", "cfid":"${cfid}"}'
+        - '{"username":"${name}","password":"${pass}","url":"${url}","port":"${port}","dbname":"${dbname}","vpcid":"${vpcid}","prisuba":"${prisuba}","prisubb":"${prisubb}","rdssg":"${rdssg}", "cfid":"${cfid}"}'
         - name: !Ref DBUsername
           pass: !Ref DBPassword
-          url: !GetAtt RDSDBInstance.Endpoint.Address
-          port: !GetAtt RDSDBInstance.Endpoint.Port
+          url: !GetAtt RDSCluster.Endpoint.Address
+          port: !GetAtt RDSCluster.Endpoint.Port
+          dbname: !Ref DBName
           vpcid: !Ref VPC
           prisuba: !Ref PriSuba
           prisubb: !Ref PriSubb

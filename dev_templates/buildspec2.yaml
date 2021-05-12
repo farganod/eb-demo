@@ -1,10 +1,9 @@
 version: 0.2
+env:
+  secrets-manager:
+    cfid: "$appname:cfid"
 
 phases:
-  pre_build:
-    commands:
-      - elb=$(aws elasticbeanstalk describe-environment-resources --environment-name $appname | python -c "import sys, json; print(json.load(sys.stdin)['EnvironmentResources']['LoadBalancers'][0]['Name'])")
-      - dns=$(aws elbv2 describe-load-balancers --load-balancer-arns $elb | python -c "import sys, json; print(json.load(sys.stdin)['LoadBalancers'][0]['DNSName'])")
   build:
     commands:
-      - aws cloudformation create-stack --stack-name $appname-cloudfront --template-body file://cloudfront.yaml --parameters ParameterKey=ALBId,ParameterValue=$elb ParameterKey=DNSName,ParameterValue=$dns || aws cloudformation update-stack --stack-name $appname-cloudfront --template-body file://cloudfront.yaml --parameters ParameterKey=ALBId,ParameterValue=$elb ParameterKey=DNSName,ParameterValue=$dns; exit 0
+      - aws cloudfront create-invalidation --distribution-id $cfid --paths "/*"
