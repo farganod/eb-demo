@@ -2,7 +2,7 @@
 // var app = express(); 
 // var publicDir = require('path').join(__dirname,'/images'); 
 // app.use(express.static(publicDir)); 
-
+/*
 const port = process.env.PORT || 3000,
   mysql = require("mysql"),
   http = require("http"),
@@ -23,7 +23,7 @@ const try_connect_sql = async (host, user, pass, db) => {
       con.end();
   });
 };
-
+*/
 var server = http.createServer(async (req, res) => {
   if (req.method === "GET") {
     res.writeHead(200, "OK", { "Content-Type": "text/html" });
