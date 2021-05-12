@@ -11,21 +11,17 @@ const port = process.env.PORT || 3000,
   html_connected = fs.readFileSync("index_connected.html");
 
 const try_connect_sql = async (host, user, pass, db) => {
-  var mysqlConnection = mysql.createConnection({
+  const con = mysql.createConnection({
       host: host,
       user: user,
-      password: pass,
-      database: db
-  })
-  mysqlConnection.connect((err) => {
-    if(err) {
-        console.log('THIS IS NOT CONNECTING #20')
-        return false
-    }
-    console.log("Connected to RDS!")
-    c
-    return true
-  })
+      password: pass
+  });
+  
+  con.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected!");
+      con.end();
+  });
 };
 
 var server = http.createServer(async (req, res) => {
