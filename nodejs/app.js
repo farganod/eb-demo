@@ -2,12 +2,12 @@
 // var app = express(); 
 // var publicDir = require('path').join(__dirname,'/images'); 
 // app.use(express.static(publicDir)); 
-/*
+
 const port = process.env.PORT || 3000,
-  mysql = require("mysql"),
+  //mysql = require("mysql"),
   http = require("http"),
   fs = require("fs"),
-  html_disconnected = fs.readFileSync("index_disconnected.html"),
+  //html_disconnected = fs.readFileSync("index_disconnected.html"),
   html_connected = fs.readFileSync("index_connected.html");
 
 const try_connect_sql = async (host, user, pass, db) => {
