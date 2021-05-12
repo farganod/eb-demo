@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "mssql": "^2.16.0"
+    "mysql": ">=2.5.0"
   },
   "scripts": {
     "start": "node app.js",
