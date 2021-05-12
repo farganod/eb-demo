@@ -32,8 +32,8 @@ const try_connect_sql = async (host, user, pass, db) => {
   let connection = mysql.createConnection({
     host     : host,
     user     : user,
-    password : pass,
-    database : db
+    password : pass
+    //database : db
   });
   connection.connect(function(err) {
     if (err) {
