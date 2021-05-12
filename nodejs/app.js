@@ -21,7 +21,7 @@ const try_connect_sql = async (hostname, username, pass, db) => {
     connection.connect();
     console.log('connected as id ' + connection.threadId);
     connection.end();
-    return true;
+    return false;
   } catch (err) {
     console.log(err);
     return false;
