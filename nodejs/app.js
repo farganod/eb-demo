@@ -27,8 +27,9 @@ const try_connect_sql = async (host, user, pass, db) => {
 var server = http.createServer(async (req, res) => {
   if (req.method === "GET") {
     res.writeHead(200, "OK", { "Content-Type": "text/html" });
-    const result = await try_connect_sql(process.env.host_name,process.env.user_name,process.env.password,process.env.dbname);
-    res.write(result ? html_connected : html_disconnected);
+    //const result = await try_connect_sql(process.env.host_name,process.env.user_name,process.env.password,process.env.dbname);
+    //res.write(result ? html_connected : html_disconnected);
+    res.write(html_connected);
   } else {
     res.writeHead(405, "Method Not Allowed", { "Content-Type": "text/plain" });
   }
