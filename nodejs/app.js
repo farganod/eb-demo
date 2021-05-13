@@ -18,19 +18,15 @@ const try_connect_sql = async (hostname, username, pass) => {
     password : pass
     //database: db
   });
-  connection.connect(function(err) {
+  check = connection.connect(function(err) {
     if (err) {
       console.error('error connecting: ' + err.stack);
-      var boolean = false;
+      return false;
     }
     console.log('connected as id ' + connection.threadId);
-    var boolean = true;
-  });
-  if (boolean == true){
     return true;
-  } else {
-    return false
-  }
+  });
+  return check;
 };
 
 var server = http.createServer(async (req, res) => {
