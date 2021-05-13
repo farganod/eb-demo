@@ -4,11 +4,12 @@
 // app.use(express.static(publicDir)); 
 
 const port = process.env.PORT || 3000,
-  mysql = require("mysql"),
   http = require("http"),
   fs = require("fs"),
   html_disconnected = fs.readFileSync("index_disconnected.html"),
   html_connected = fs.readFileSync("index_connected.html");
+
+var mysql = require("mysql");
 
 const try_connect_sql = async (hostname, username, pass, db) => {
   var connection = mysql.createConnection({
@@ -18,10 +19,12 @@ const try_connect_sql = async (hostname, username, pass, db) => {
     database: db
   });
   try {
-    connection.connect();
-    console.log('connected as id ' + connection.threadId);
+    connect.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected!");
+    });
     connection.end();
-    return false;
+    return true;
   } catch (err) {
     console.log(err);
     return false;
