@@ -11,12 +11,12 @@ const port = process.env.PORT || 3000,
 
 var mysql = require("mysql");
 
-const try_connect_sql = async (hostname, username, pass, db) => {
+const try_connect_sql = async (hostname, username, pass) => {
   var connection = mysql.createConnection({
     host     : hostname,
     user     : username,
-    password : pass,
-    database: db
+    password : pass
+    //database: db
   });
   connection.connect(function(err) {
     if (err) return false;
@@ -30,7 +30,7 @@ const try_connect_sql = async (hostname, username, pass, db) => {
 var server = http.createServer(async (req, res) => {
   if (req.method === "GET") {
     res.writeHead(200, "OK", { "Content-Type": "text/html" });
-    const result = await try_connect_sql(process.env.host_name,process.env.user_name,process.env.password,process.env.dbname);
+    const result = await try_connect_sql(process.env.host_name,process.env.user_name,process.env.password);
     res.write(result ? html_connected : html_disconnected);
   } else {
     res.writeHead(405, "Method Not Allowed", { "Content-Type": "text/plain" });
