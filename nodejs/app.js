@@ -19,7 +19,7 @@ const try_connect_sql = async (hostname, username, pass, db) => {
     database: db
   });
   try {
-    connect.connect(function(err) {
+    connection.connect(function(err) {
       if (err) throw err;
       console.log("Connected!");
     });
