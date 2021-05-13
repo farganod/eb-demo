@@ -20,16 +20,11 @@ const try_connect_sql = async (hostname, username, pass, db) => {
   });
   try {
     connection.connect(function(err) {
-      if (err) throw err;
+      if (err) return false;;
       console.log("Connected!");
       connection.end();
       return true;
     });
-    
-  } catch (err) {
-    console.log(err);
-    return false;
-  }
 
 };
 
