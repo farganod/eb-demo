@@ -15,16 +15,17 @@ const try_connect_sql = async (hostname, username, pass, db) => {
   var connection = mysql.createConnection({
     host     : hostname,
     user     : username,
-    // password : pass,
+    password : pass,
     database: db
   });
   try {
     connection.connect(function(err) {
       if (err) throw err;
       console.log("Connected!");
+      connection.end();
+      return true;
     });
-    connection.end();
-    return true;
+    
   } catch (err) {
     console.log(err);
     return false;
