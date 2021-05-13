@@ -15,7 +15,7 @@ const try_connect_sql = async (hostname, username, pass, db) => {
   var connection = mysql.createConnection({
     host     : hostname,
     user     : username,
-    password : pass,
+    // password : pass,
     database: db
   });
   try {
