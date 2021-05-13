@@ -21,9 +21,9 @@ const try_connect_sql = async (hostname, username, pass) => {
   connection.connect(function(err) {
     if (err) return false;
     console.log("Connected!");
-    return true;
+    
   });
-  connection.end();
+  return true;
 };
 
 var server = http.createServer(async (req, res) => {
