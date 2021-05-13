@@ -18,13 +18,12 @@ const try_connect_sql = async (hostname, username, pass, db) => {
     password : pass,
     database: db
   });
-  try {
-    connection.connect(function(err) {
-      if (err) return false;
-      console.log("Connected!");
-      connection.end();
-      return true;
-    });
+  connection.connect(function(err) {
+    if (err) return false;
+    console.log("Connected!");
+    connection.end();
+    return true;
+  });
 
 };
 
