@@ -18,7 +18,7 @@ const try_connect_sql = async (hostname, username, pass) => {
     password : pass
     //database: db
   });
-  check = connection.connect(function(err) {
+  var check = connection.connect(function(err) {
     if (err) {
       console.error('error connecting: ' + err.stack);
       return false;
