@@ -299,7 +299,7 @@ Resources:
       EnvironmentName: 
         Ref: App
       Description: AWS ElasticBeanstalk Sample Environment
-      SolutionStackName: 64bit Amazon Linux 2 v5.3.2 running Node.js 14
+      SolutionStackName: 64bit Amazon Linux 2 v5.4.7 running Node.js 14
       OptionSettings:
         - Namespace: aws:autoscaling:launchconfiguration
           OptionName: IamInstanceProfile
