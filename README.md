@@ -30,7 +30,7 @@ Prior to using this repo you will need to have Github account and forked this re
 
 * First download the `infra.yaml` deploy this directly to your AWS account using the console or CLI. This will take several minutes to complete
 * In the current version of this code base you will need to manually setup the AWS Code Pipeline. Below outlines each stage:
-* * Stage 1 Source: Forked Repo 
-* * Stage 2 Build: Code Build Project Built by CFN template
-* * Stage 3 Deploy: Manually define a Code Deploy job that will deploy to the EB environment that was created
-* * Stage 4 Build: 2nd Code Build Project to deploy the `cloudfront.yaml` CFN template
+ * Stage 1 Source: Forked Repo 
+ * Stage 2 Build: Code Build Project Built by CFN template
+ * Stage 3 Deploy: Manually define a Code Deploy job that will deploy to the EB environment that was created
+ * Stage 4 Build: 2nd Code Build Project to deploy the `cloudfront.yaml` CFN template
